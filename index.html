@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stephoria — Creating Timeless Memories</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            royal: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
+            },
+            gold: {
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+            }
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* Custom animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(147, 51, 234, 0.6); }
+    }
+
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+    .animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
+    .animate-slide-left { animation: slideInLeft 0.8s ease-out forwards; }
+    .animate-slide-right { animation: slideInRight 0.8s ease-out forwards; }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+    .delay-600 { animation-delay: 0.6s; }
+    .delay-700 { animation-delay: 0.7s; }
+    .delay-800 { animation-delay: 0.8s; }
+
+    .shimmer-text {
+      background: linear-gradient(90deg, #e9d5ff, #ffffff, #fbbf24, #ffffff, #e9d5ff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+
+    /* Scroll-triggered animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.85);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Glass morphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Gradient borders */
+    .gradient-border {
+      position: relative;
+      border-radius: 1rem;
+    }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #9333ea, #fbbf24, #9333ea);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .gradient-border:hover::before {
+      opacity: 1;
+    }
+
+    /* Smooth navbar */
+    .nav-scrolled {
+      background: rgba(15, 3, 30, 0.95) !important;
+      backdrop-filter: blur(20px) !important;
+      box-shadow: 0 4px 30px rgba(147, 51, 234, 0.15) !important;
+    }
+
+    /* Hero particles */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(168, 85, 247, 0.4);
+      border-radius: 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    /* Service card hover */
+    .service-card {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(147, 51, 234, 0.25);
+    }
+
+    /* Experience card */
+    .experience-card {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .experience-card:hover {
+      transform: scale(1.05);
+    }
+    .experience-card:hover .experience-overlay {
+      opacity: 1;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f031e; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #9333ea, #6b21a8);
+      border-radius: 4px;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body class="bg-[#0a0118] text-white overflow-x-hidden">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-royal-500 to-royal-700 flex items-center justify-center text-white font-serif font-bold text-xl group-hover:shadow-lg group-hover:shadow-royal-500/40 transition-all duration-300">S</div>
+        <span class="text-2xl font-serif font-bold bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Stephoria</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#about" class="text-sm text-gray-300 hover:text-royal-300 transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-royal-400 after:transition-all after:duration-300 hover:after:w-full">About</a>
+        <a href="#services" class="text-sm text-gray-300 hover:text-royal-300 transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-royal-400 after:transition-all after:duration-300 hover:after:w-full">Services</a>
+        <a href="#experiences" class="text-sm text-gray-300 hover:text-royal-300 transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-royal-400 after:transition-all after:duration-300 hover:after:w-full">Experiences</a>
+        <a href="#signature" class="text-sm text-gray-300 hover:text-royal-300 transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-royal-400 after:transition-all after:duration-300 hover:after:w-full">Signature</a>
+        <a href="#testimonials" class="text-sm text-gray-300 hover:text-royal-300 transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-royal-400 after:transition-all after:duration-300 hover:after:w-full">Testimonials</a>
+        <a href="#packages" class="text-sm text-gray-300 hover:text-royal-300 transition-colors duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-royal-400 after:transition-all after:duration-300 hover:after:w-full">Packages</a>
+        <a href="#contact" class="ml-4 px-6 py-2.5 bg-gradient-to-r from-royal-600 to-royal-700 hover:from-royal-500 hover:to-royal-600 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-royal-500/30">Book Now</a>
+      </div>
+      <!-- Mobile hamburger -->
+      <button id="menuBtn" class="lg:hidden relative z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5">
+        <span class="w-6 h-0.5 bg-white transition-all duration-300" id="bar1"></span>
+        <span class="w-6 h-0.5 bg-white transition-all duration-300" id="bar2"></span>
+        <span class="w-6 h-0.5 bg-white transition-all duration-300" id="bar3"></span>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-[#0a0118]/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8 lg:hidden">
+      <a href="#about" class="text-2xl font-serif text-gray-200 hover:text-royal-300 transition-colors" onclick="closeMenu()">About</a>
+      <a href="#services" class="text-2xl font-serif text-gray-200 hover:text-royal-300 transition-colors" onclick="closeMenu()">Services</a>
+      <a href="#experiences" class="text-2xl font-serif text-gray-200 hover:text-royal-300 transition-colors" onclick="closeMenu()">Experiences</a>
+      <a href="#signature" class="text-2xl font-serif text-gray-200 hover:text-royal-300 transition-colors" onclick="closeMenu()">Signature</a>
+      <a href="#testimonials" class="text-2xl font-serif text-gray-200 hover:text-royal-300 transition-colors" onclick="closeMenu()">Testimonials</a>
+      <a href="#packages" class="text-2xl font-serif text-gray-200 hover:text-royal-300 transition-colors" onclick="closeMenu()">Packages</a>
+      <a href="#contact" class="mt-4 px-8 py-3 bg-gradient-to-r from-royal-600 to-royal-700 rounded-full text-lg font-medium" onclick="closeMenu()">Book Now</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background gradients -->
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-royal-950/80 via-[#0a0118] to-[#0a0118]"></div>
+      <div class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-royal-800/20 blur-[120px] animate-float"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-royal-600/15 blur-[100px] animate-float" style="animation-delay: -3s;"></div>
+      <div class="absolute top-[30%] right-[20%] w-[300px] h-[300px] rounded-full bg-gold-400/10 blur-[80px] animate-float" style="animation-delay: -5s;"></div>
+    </div>
+    <!-- Floating particles -->
+    <div class="particle" style="top:15%;left:10%;animation-delay:0s;"></div>
+    <div class="particle" style="top:25%;left:80%;animation-delay:-2s;width:6px;height:6px;background:rgba(251,191,36,0.3);"></div>
+    <div class="particle" style="top:60%;left:15%;animation-delay:-4s;width:5px;height:5px;"></div>
+    <div class="particle" style="top:70%;left:75%;animation-delay:-1s;"></div>
+    <div class="particle" style="top:40%;left:50%;animation-delay:-6s;width:3px;height:3px;background:rgba(251,191,36,0.2);"></div>
+    <div class="particle" style="top:85%;left:35%;animation-delay:-3s;width:5px;height:5px;"></div>
+    <div class="particle" style="top:10%;left:60%;animation-delay:-7s;width:4px;height:4px;"></div>
+
+    <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      <div class="animate-fade-in opacity-0">
+        <p class="text-royal-300 uppercase tracking-[0.35em] text-sm font-medium mb-6">Stephoria Events</p>
+      </div>
+      <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8 animate-fade-in-up opacity-0 delay-200">
+        <span class="shimmer-text">Creating Timeless</span><br>
+        <span class="bg-gradient-to-r from-white via-royal-200 to-white bg-clip-text text-transparent">Memories</span>
+      </h1>
+      <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up opacity-0 delay-400">
+        Stephoria is a premium event planning brand that transforms moments into unforgettable experiences through creative direction and seamless execution.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up opacity-0 delay-600">
+        <a href="#contact" class="group relative px-8 py-4 bg-gradient-to-r from-royal-600 to-royal-700 rounded-full text-lg font-medium overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-royal-500/30">
+          <span class="relative z-10">Plan My Event</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-royal-500 to-gold-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+        <a href="#contact" class="px-8 py-4 border border-royal-500/40 rounded-full text-lg font-medium text-royal-200 hover:bg-royal-500/10 hover:border-royal-400/60 transition-all duration-300">
+          Book a Consultation
+        </a>
+      </div>
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-fade-in opacity-0 delay-800">
+        <div class="w-6 h-10 border-2 border-royal-400/40 rounded-full flex justify-center">
+          <div class="w-1.5 h-3 bg-royal-400 rounded-full mt-2 animate-bounce"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section id="about" class="relative py-32 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-transparent to-royal-500/50"></div>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal-left">
+          <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Why We Do It</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8 leading-tight">
+            Every Moment<br>
+            <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Deserves Magic</span>
+          </h2>
+          <div class="space-y-6 text-gray-400 text-lg leading-relaxed">
+            <p>We believe every milestone deserves intention. Every love story deserves expression. Every celebration deserves to be <span class="text-royal-300 font-medium">unforgettable</span>.</p>
+            <p>Our mission is to capture the feeling of <span class="italic font-serif text-gold-400">euphoria</span> in every event we plan and execute.</p>
+          </div>
+          <div class="mt-10 flex items-center gap-6">
+            <div class="text-center">
+              <p class="text-4xl font-bold bg-gradient-to-r from-royal-400 to-gold-400 bg-clip-text text-transparent">150+</p>
+              <p class="text-gray-500 text-sm mt-1">Events Planned</p>
+            </div>
+            <div class="w-px h-12 bg-royal-700"></div>
+            <div class="text-center">
+              <p class="text-4xl font-bold bg-gradient-to-r from-royal-400 to-gold-400 bg-clip-text text-transparent">100%</p>
+              <p class="text-gray-500 text-sm mt-1">Client Satisfaction</p>
+            </div>
+            <div class="w-px h-12 bg-royal-700"></div>
+            <div class="text-center">
+              <p class="text-4xl font-bold bg-gradient-to-r from-royal-400 to-gold-400 bg-clip-text text-transparent">50+</p>
+              <p class="text-gray-500 text-sm mt-1">Vendor Partners</p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <div class="relative">
+            <div class="w-full aspect-[4/5] rounded-2xl bg-gradient-to-br from-royal-900/60 to-royal-800/30 border border-royal-700/30 overflow-hidden relative">
+              <div class="absolute inset-0 bg-gradient-to-br from-royal-600/20 via-transparent to-gold-500/10"></div>
+              <!-- Decorative elements -->
+              <div class="absolute top-8 left-8 w-20 h-20 border-2 border-royal-400/30 rounded-full"></div>
+              <div class="absolute top-16 left-16 w-20 h-20 border-2 border-gold-400/20 rounded-full"></div>
+              <div class="absolute bottom-12 right-12 w-32 h-32 border-2 border-royal-500/20 rounded-full"></div>
+              <div class="flex items-center justify-center h-full">
+                <div class="text-center p-8">
+                  <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-royal-500 to-royal-700 flex items-center justify-center mb-6 animate-pulse-glow">
+                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                  </div>
+                  <p class="font-serif text-2xl text-royal-200 italic">"Where moments become memories"</p>
+                </div>
+              </div>
+            </div>
+            <!-- Floating accent -->
+            <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-br from-gold-400 to-gold-500 rounded-2xl opacity-20 blur-sm"></div>
+            <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-royal-500 to-royal-600 rounded-full opacity-30 blur-sm"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES SECTION ===== -->
+  <section id="services" class="relative py-32">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-royal-950/30 to-transparent"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="text-center mb-20 reveal">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">What We Offer</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6">
+          Our <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Services</span>
+        </h2>
+        <p class="text-gray-500 max-w-xl mx-auto">Premium event services tailored to your vision, executed with precision and elegance.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Service 1 -->
+        <div class="service-card glass rounded-2xl p-8 reveal" style="transition-delay: 0.1s;">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-royal-600 to-royal-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-royal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold mb-3">Event Planning</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Full-service event planning from concept to completion, ensuring every detail aligns with your vision.</p>
+        </div>
+        <!-- Service 2 -->
+        <div class="service-card glass rounded-2xl p-8 reveal" style="transition-delay: 0.2s;">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-royal-600 to-royal-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-royal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold mb-3">Event Coordination</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Day-of coordination that ensures seamless execution, so you can enjoy every moment stress-free.</p>
+        </div>
+        <!-- Service 3 -->
+        <div class="service-card glass rounded-2xl p-8 reveal" style="transition-delay: 0.3s;">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-royal-600 to-royal-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-royal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold mb-3">Creative Direction</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Visionary creative concepts that transform your event into an immersive and unforgettable experience.</p>
+        </div>
+        <!-- Service 4 -->
+        <div class="service-card glass rounded-2xl p-8 reveal" style="transition-delay: 0.4s;">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-royal-600 to-royal-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-royal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold mb-3">Vendor Sourcing</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Access our curated network of premium vendors to find the perfect partners for your event.</p>
+        </div>
+        <!-- Service 5 -->
+        <div class="service-card glass rounded-2xl p-8 reveal" style="transition-delay: 0.5s;">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-royal-600 to-royal-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-royal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold mb-3">Event Consultation</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Expert guidance and strategic advice to help you shape and refine your event vision.</p>
+        </div>
+        <!-- Service 6 -->
+        <div class="service-card glass rounded-2xl p-8 reveal" style="transition-delay: 0.6s;">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-royal-600 to-royal-800 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-royal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif font-semibold mb-3">Vendor Collaboration</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Coordinating and managing vendor relationships to deliver cohesive, world-class events.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SIGNATURE EXPERIENCES ===== -->
+  <section id="experiences" class="relative py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-20 reveal">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">What We Create</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6">
+          Signature <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Experiences</span>
+        </h2>
+        <p class="text-gray-500 max-w-xl mx-auto">From intimate celebrations to grand affairs, we craft experiences that leave lasting impressions.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
+        <!-- Experience cards -->
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal-scale" style="transition-delay:0.05s;">
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&h=800&fit=crop" alt="Birthday celebration" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+          <div class="absolute top-6 left-6">
+            <svg class="w-8 h-8 text-royal-300/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A1.75 1.75 0 013 15.546M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="font-serif text-xl font-semibold">Birthdays</h3>
+            <p class="text-gray-400 text-sm mt-1">Immersive celebrations</p>
+          </div>
+        </div>
+
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal-scale" style="transition-delay:0.1s;">
+          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&h=800&fit=crop" alt="Engagement celebration" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+          <div class="absolute top-6 left-6">
+            <svg class="w-8 h-8 text-royal-300/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="font-serif text-xl font-semibold">Engagements</h3>
+            <p class="text-gray-400 text-sm mt-1">Crafted love stories</p>
+          </div>
+        </div>
+
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal-scale" style="transition-delay:0.15s;">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=800&fit=crop" alt="Wedding ceremony" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+          <div class="absolute top-6 left-6">
+            <svg class="w-8 h-8 text-gold-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          </div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="font-serif text-xl font-semibold">Weddings</h3>
+            <p class="text-gray-400 text-sm mt-1">Timeless elegance</p>
+          </div>
+        </div>
+
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal-scale" style="transition-delay:0.2s;">
+          <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&h=800&fit=crop" alt="Baby and bridal shower" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+          <div class="absolute top-6 left-6">
+            <svg class="w-8 h-8 text-royal-300/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+          </div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="font-serif text-xl font-semibold">Baby & Bridal Showers</h3>
+            <p class="text-gray-400 text-sm mt-1">Beautiful beginnings</p>
+          </div>
+        </div>
+
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal-scale" style="transition-delay:0.25s;">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&h=800&fit=crop" alt="Proposal moment" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+          <div class="absolute top-6 left-6">
+            <svg class="w-8 h-8 text-royal-300/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="font-serif text-xl font-semibold">Proposals</h3>
+            <p class="text-gray-400 text-sm mt-1">The perfect moment</p>
+          </div>
+        </div>
+
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer reveal-scale" style="transition-delay:0.3s;">
+          <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=800&fit=crop" alt="Concert event" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </div>
+          <div class="absolute top-6 left-6">
+            <svg class="w-8 h-8 text-royal-300/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+          </div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <h3 class="font-serif text-xl font-semibold">Concerts</h3>
+            <p class="text-gray-400 text-sm mt-1">Electric atmosphere</p>
+          </div>
+        </div>
+      </div>
+      <!-- Additional experiences row -->
+      <div class="grid grid-cols-3 gap-4 md:gap-6 mt-4 md:mt-6">
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/2] cursor-pointer reveal-scale" style="transition-delay:0.35s;">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop" alt="Product launch event" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <h3 class="font-serif text-lg font-semibold">Product Launches</h3>
+          </div>
+        </div>
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/2] cursor-pointer reveal-scale" style="transition-delay:0.4s;">
+          <img src="https://images.unsplash.com/photo-1482575832494-771f74bf6857?w=600&h=400&fit=crop" alt="Holiday celebration" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <h3 class="font-serif text-lg font-semibold">Holiday Events</h3>
+          </div>
+        </div>
+        <div class="experience-card relative rounded-2xl overflow-hidden aspect-[3/2] cursor-pointer reveal-scale" style="transition-delay:0.45s;">
+          <img src="https://images.unsplash.com/photo-1501446529957-6226bd447c46?w=600&h=400&fit=crop" alt="Memorial ceremony" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="experience-overlay absolute inset-0 bg-royal-600/30 opacity-0 transition-opacity duration-500"></div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <h3 class="font-serif text-lg font-semibold">Funerals</h3>
+            <p class="text-gray-500 text-xs mt-0.5">Honoring lives with grace</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BIRTHDAY BUILD-UP EXPERIENCE ===== -->
+  <section class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-royal-950/50 via-transparent to-royal-950/50"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-royal-700/10 blur-[150px]"></div>
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal-left">
+          <p class="text-gold-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Featured</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8 leading-tight">
+            The Birthday<br>
+            <span class="bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent">Build-Up Experience</span>
+          </h2>
+          <p class="text-gray-400 text-lg leading-relaxed mb-6">
+            We don't just decorate birthdays — we design <span class="text-royal-300 font-medium">immersive birthday experiences</span>.
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-8">
+            From concept development and color themes to decor styling and surprise elements, we create anticipation and deliver unforgettable reveals.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <span class="px-4 py-2 rounded-full bg-royal-900/50 border border-royal-700/30 text-royal-300 text-sm">Concept Development</span>
+            <span class="px-4 py-2 rounded-full bg-royal-900/50 border border-royal-700/30 text-royal-300 text-sm">Color Themes</span>
+            <span class="px-4 py-2 rounded-full bg-royal-900/50 border border-royal-700/30 text-royal-300 text-sm">Decor Styling</span>
+            <span class="px-4 py-2 rounded-full bg-royal-900/50 border border-royal-700/30 text-royal-300 text-sm">Surprise Elements</span>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <div class="relative">
+            <div class="w-full aspect-square rounded-3xl bg-gradient-to-br from-royal-800/40 to-gold-500/10 border border-royal-700/20 p-10 flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-8xl mb-6">&#127874;</div>
+                <p class="font-serif text-3xl text-royal-200 italic mb-2">Build the Anticipation</p>
+                <p class="text-gray-500">Deliver the Unforgettable</p>
+              </div>
+            </div>
+            <div class="absolute -top-3 -right-3 w-20 h-20 bg-gradient-to-br from-gold-400 to-gold-500 rounded-2xl flex items-center justify-center text-3xl rotate-12">&#127881;</div>
+            <div class="absolute -bottom-3 -left-3 w-16 h-16 bg-gradient-to-br from-royal-500 to-royal-700 rounded-full flex items-center justify-center text-2xl">&#10024;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENGAGEMENT STORY PLANNING ===== -->
+  <section class="relative py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1 reveal-left">
+          <div class="relative">
+            <div class="w-full aspect-[4/5] rounded-3xl bg-gradient-to-br from-royal-900/60 to-royal-800/20 border border-royal-700/20 overflow-hidden">
+              <div class="absolute inset-0 flex flex-col items-center justify-center p-10">
+                <div class="w-32 h-32 rounded-full bg-gradient-to-br from-royal-500/30 to-gold-400/20 border-2 border-royal-400/30 flex items-center justify-center mb-8">
+                  <svg class="w-16 h-16 text-royal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </div>
+                <div class="space-y-4 text-center">
+                  <div class="flex items-center gap-3 justify-center">
+                    <div class="w-8 h-px bg-royal-500/50"></div>
+                    <span class="text-royal-400 text-sm uppercase tracking-widest">How They Met</span>
+                    <div class="w-8 h-px bg-royal-500/50"></div>
+                  </div>
+                  <div class="flex items-center gap-3 justify-center">
+                    <div class="w-8 h-px bg-royal-400/50"></div>
+                    <span class="text-royal-300 text-sm uppercase tracking-widest">Their Journey</span>
+                    <div class="w-8 h-px bg-royal-400/50"></div>
+                  </div>
+                  <div class="flex items-center gap-3 justify-center">
+                    <div class="w-8 h-px bg-gold-400/50"></div>
+                    <span class="text-gold-400 text-sm uppercase tracking-widest">The Proposal</span>
+                    <div class="w-8 h-px bg-gold-400/50"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="order-1 lg:order-2 reveal-right">
+          <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Love Stories</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8 leading-tight">
+            Engagement<br>
+            <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Story Planning</span>
+          </h2>
+          <p class="text-gray-400 text-lg leading-relaxed mb-6">
+            We help couples craft their story — how they met, their journey, and the proposal moment — and execute it with <span class="text-royal-300 font-medium">elegance and precision</span>.
+          </p>
+          <p class="text-gray-500 leading-relaxed">
+            Every love story is unique. We capture the essence of your relationship and transform it into a narrative that unfolds beautifully on your special day.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SIGNATURE STYLE - PURPLE AESTHETIC ===== -->
+  <section id="signature" class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-royal-950/40 via-royal-900/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 w-full h-full">
+      <div class="absolute top-[10%] left-[5%] w-40 h-40 rounded-full bg-royal-600/10 blur-[60px]"></div>
+      <div class="absolute bottom-[20%] right-[10%] w-60 h-60 rounded-full bg-royal-500/10 blur-[80px]"></div>
+      <div class="absolute top-[50%] left-[50%] w-80 h-80 rounded-full bg-gold-400/5 blur-[100px]"></div>
+    </div>
+    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+      <div class="reveal">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Our Identity</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8">
+          Signature Style —<br>
+          <span class="bg-gradient-to-r from-royal-400 via-royal-300 to-gold-400 bg-clip-text text-transparent">The Purple Aesthetic</span>
+        </h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed mb-16">
+          Purple represents <span class="text-royal-300 font-medium">royalty</span>, <span class="text-royal-300 font-medium">creativity</span>, and <span class="text-gold-400 font-medium">luxury</span> — a core aesthetic in our event styling and brand identity.
+        </p>
+      </div>
+      <!-- Purple palette showcase -->
+      <div class="flex items-center justify-center gap-3 md:gap-4 mb-16 reveal">
+        <div class="w-12 h-24 md:w-16 md:h-32 rounded-xl bg-royal-950 transition-all duration-300 hover:h-40 hover:shadow-lg hover:shadow-royal-900/50"></div>
+        <div class="w-12 h-28 md:w-16 md:h-36 rounded-xl bg-royal-900 transition-all duration-300 hover:h-44 hover:shadow-lg hover:shadow-royal-800/50"></div>
+        <div class="w-12 h-32 md:w-16 md:h-40 rounded-xl bg-royal-800 transition-all duration-300 hover:h-48 hover:shadow-lg hover:shadow-royal-700/50"></div>
+        <div class="w-12 h-36 md:w-16 md:h-44 rounded-xl bg-royal-700 transition-all duration-300 hover:h-52 hover:shadow-lg hover:shadow-royal-600/50"></div>
+        <div class="w-12 h-40 md:w-16 md:h-48 rounded-xl bg-royal-600 transition-all duration-300 hover:h-56 hover:shadow-lg hover:shadow-royal-500/50"></div>
+        <div class="w-12 h-36 md:w-16 md:h-44 rounded-xl bg-royal-500 transition-all duration-300 hover:h-52 hover:shadow-lg hover:shadow-royal-400/50"></div>
+        <div class="w-12 h-32 md:w-16 md:h-40 rounded-xl bg-royal-400 transition-all duration-300 hover:h-48 hover:shadow-lg hover:shadow-royal-300/50"></div>
+        <div class="w-12 h-28 md:w-16 md:h-36 rounded-xl bg-gold-400 transition-all duration-300 hover:h-44 hover:shadow-lg hover:shadow-gold-300/50"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== POETIC STORYTELLING ===== -->
+  <section class="relative py-32">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center reveal">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">The Art of Words</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-16">
+          Poetic <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Storytelling</span>
+        </h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="glass rounded-2xl p-10 reveal-left">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-royal-500 to-royal-700 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl font-semibold mb-4">For the Bride & Groom</h3>
+          <p class="text-gray-400 leading-relaxed">Personalized poetic write-ups that capture the essence of your love story, read aloud or displayed beautifully at your celebration.</p>
+          <div class="mt-6 p-4 rounded-xl bg-royal-950/50 border border-royal-800/30">
+            <p class="font-serif italic text-royal-300 text-sm leading-relaxed">"Two souls entwined by fate's design, your love — a masterpiece, forever divine..."</p>
+          </div>
+        </div>
+        <div class="glass rounded-2xl p-10 reveal-right">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-400 to-gold-500 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl font-semibold mb-4">Family Tributes</h3>
+          <p class="text-gray-400 leading-relaxed">Heartfelt tributes from families that add emotional depth to the celebration, honoring the bonds that made this moment possible.</p>
+          <div class="mt-6 p-4 rounded-xl bg-royal-950/50 border border-royal-800/30">
+            <p class="font-serif italic text-gold-300 text-sm leading-relaxed">"From first steps to this dance, through every chapter and chance — our hearts overflow with pride..."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLIENT EXPERIENCE / TESTIMONIAL ===== -->
+  <section id="testimonials" class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-royal-950/30 to-transparent"></div>
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <div class="reveal">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Client Experience</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-16">
+          What Our Clients <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Say</span>
+        </h2>
+      </div>
+      <div class="reveal-scale">
+        <div class="glass rounded-3xl p-10 md:p-14 relative">
+          <svg class="w-16 h-16 text-royal-700/40 mx-auto mb-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H0z"/></svg>
+          <blockquote class="font-serif text-2xl md:text-3xl text-royal-100 leading-relaxed mb-8 italic">
+            "Stephoria captured the feeling of our event beautifully. Every detail was intentional and flawless."
+          </blockquote>
+          <div class="flex items-center justify-center gap-1">
+            <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-gray-500 mt-4 text-sm">— Happy Stephoria Client</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUSTED VENDOR NETWORK ===== -->
+  <section class="relative py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal-left">
+          <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Our Network</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8 leading-tight">
+            Trusted Vendor<br>
+            <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Network</span>
+          </h2>
+          <p class="text-gray-400 text-lg leading-relaxed mb-10">
+            We collaborate with trusted decorators, photographers, caterers, stylists, and venue partners to deliver excellence at every level.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-royal-950/50 border border-royal-800/20">
+              <div class="w-10 h-10 rounded-lg bg-royal-800/50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-royal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <span class="text-sm text-gray-300">Photographers</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-royal-950/50 border border-royal-800/20">
+              <div class="w-10 h-10 rounded-lg bg-royal-800/50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-royal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A1.75 1.75 0 013 15.546"/></svg>
+              </div>
+              <span class="text-sm text-gray-300">Decorators</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-royal-950/50 border border-royal-800/20">
+              <div class="w-10 h-10 rounded-lg bg-royal-800/50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-royal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+              </div>
+              <span class="text-sm text-gray-300">Caterers</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-royal-950/50 border border-royal-800/20">
+              <div class="w-10 h-10 rounded-lg bg-royal-800/50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-royal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+              </div>
+              <span class="text-sm text-gray-300">Stylists</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-royal-950/50 border border-royal-800/20 col-span-2">
+              <div class="w-10 h-10 rounded-lg bg-royal-800/50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-royal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              </div>
+              <span class="text-sm text-gray-300">Venue Partners</span>
+            </div>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <div class="relative">
+            <!-- Creative partnerships -->
+            <div class="glass rounded-2xl p-10">
+              <p class="text-gold-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Creative Partnerships</p>
+              <h3 class="font-serif text-2xl font-semibold mb-4">Brand Collaborations</h3>
+              <p class="text-gray-400 leading-relaxed mb-6">
+                We collaborate with brands and partners to provide design concepts, interface styling, and fully executed branded experiences.
+              </p>
+              <div class="flex items-center gap-4">
+                <div class="flex -space-x-3">
+                  <div class="w-10 h-10 rounded-full bg-royal-700 border-2 border-[#0a0118] flex items-center justify-center text-xs font-bold">S</div>
+                  <div class="w-10 h-10 rounded-full bg-royal-600 border-2 border-[#0a0118] flex items-center justify-center text-xs font-bold">+</div>
+                  <div class="w-10 h-10 rounded-full bg-gold-500 border-2 border-[#0a0118] flex items-center justify-center text-xs font-bold text-black">B</div>
+                </div>
+                <span class="text-gray-500 text-sm">Trusted brand partners</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SEASONAL & SPECIAL PACKAGES ===== -->
+  <section id="packages" class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-royal-950/40 to-transparent"></div>
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="text-center mb-20 reveal">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-4">Our Packages</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6">
+          Seasonal & Special <span class="bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Packages</span>
+        </h2>
+        <p class="text-gray-500 max-w-xl mx-auto">Curated packages designed to make your planning effortless and your event extraordinary.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Package 1 -->
+        <div class="service-card glass rounded-2xl p-8 text-center reveal" style="transition-delay:0.1s;">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-royal-600/30 to-royal-800/30 flex items-center justify-center mb-6 text-3xl">&#127876;</div>
+          <h3 class="font-serif text-lg font-semibold mb-3">Holiday Packages</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Seasonal celebrations with festive flair and signature Stephoria elegance.</p>
+          <div class="mt-6 pt-6 border-t border-royal-800/30">
+            <a href="#contact" class="text-royal-400 text-sm hover:text-royal-300 transition-colors">Learn More &rarr;</a>
+          </div>
+        </div>
+        <!-- Package 2 -->
+        <div class="service-card glass rounded-2xl p-8 text-center reveal" style="transition-delay:0.2s;">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-royal-600/30 to-royal-800/30 flex items-center justify-center mb-6 text-3xl">&#128141;</div>
+          <h3 class="font-serif text-lg font-semibold mb-3">Engagement Bundles</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Complete engagement packages from proposal planning to celebration.</p>
+          <div class="mt-6 pt-6 border-t border-royal-800/30">
+            <a href="#contact" class="text-royal-400 text-sm hover:text-royal-300 transition-colors">Learn More &rarr;</a>
+          </div>
+        </div>
+        <!-- Package 3 -->
+        <div class="service-card glass rounded-2xl p-8 text-center relative overflow-hidden reveal" style="transition-delay:0.3s;">
+          <div class="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-gold-400 to-gold-500 rounded-full text-[10px] font-bold text-black uppercase tracking-wider">Popular</div>
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-gold-400/20 to-royal-800/30 flex items-center justify-center mb-6 text-3xl">&#128152;</div>
+          <h3 class="font-serif text-lg font-semibold mb-3">Wedding Build-Up</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Full wedding journey packages with creative direction and coordination.</p>
+          <div class="mt-6 pt-6 border-t border-royal-800/30">
+            <a href="#contact" class="text-gold-400 text-sm hover:text-gold-300 transition-colors">Learn More &rarr;</a>
+          </div>
+        </div>
+        <!-- Package 4 -->
+        <div class="service-card glass rounded-2xl p-8 text-center reveal" style="transition-delay:0.4s;">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-royal-600/30 to-royal-800/30 flex items-center justify-center mb-6 text-3xl">&#128172;</div>
+          <h3 class="font-serif text-lg font-semibold mb-3">Consultation Only</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Expert guidance and creative direction without full planning services.</p>
+          <div class="mt-6 pt-6 border-t border-royal-800/30">
+            <a href="#contact" class="text-royal-400 text-sm hover:text-royal-300 transition-colors">Learn More &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section id="contact" class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#0a0118] via-royal-950/60 to-[#0a0118]"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-royal-700/15 blur-[200px]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <div class="reveal-scale">
+        <p class="text-royal-400 uppercase tracking-[0.3em] text-xs font-semibold mb-6">Let's Begin</p>
+        <h2 class="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+          Ready to Create<br>
+          <span class="shimmer-text">Your Moment?</span>
+        </h2>
+        <p class="text-gray-400 text-xl max-w-xl mx-auto mb-12 leading-relaxed">
+          Let's plan something unforgettable.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="mailto:hello@stephoria.com" class="group relative px-10 py-4 bg-gradient-to-r from-royal-600 to-royal-700 rounded-full text-lg font-medium overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-royal-500/30">
+            <span class="relative z-10">Book a Consultation</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-royal-500 to-gold-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </a>
+          <a href="mailto:hello@stephoria.com" class="px-10 py-4 border border-royal-500/40 rounded-full text-lg font-medium text-royal-200 hover:bg-royal-500/10 hover:border-royal-400/60 transition-all duration-300">
+            Get a Custom Quote
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="relative py-16 border-t border-royal-800/20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-12 mb-12">
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-royal-500 to-royal-700 flex items-center justify-center text-white font-serif font-bold text-sm">S</div>
+            <span class="text-xl font-serif font-bold bg-gradient-to-r from-royal-300 to-gold-400 bg-clip-text text-transparent">Stephoria</span>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed">Creating timeless memories through premium event planning, creative direction, and seamless execution.</p>
+        </div>
+        <div>
+          <h4 class="font-serif font-semibold mb-4 text-royal-200">Quick Links</h4>
+          <div class="space-y-2">
+            <a href="#about" class="block text-gray-500 text-sm hover:text-royal-300 transition-colors">About Us</a>
+            <a href="#services" class="block text-gray-500 text-sm hover:text-royal-300 transition-colors">Services</a>
+            <a href="#experiences" class="block text-gray-500 text-sm hover:text-royal-300 transition-colors">Experiences</a>
+            <a href="#packages" class="block text-gray-500 text-sm hover:text-royal-300 transition-colors">Packages</a>
+            <a href="#contact" class="block text-gray-500 text-sm hover:text-royal-300 transition-colors">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-serif font-semibold mb-4 text-royal-200">Get in Touch</h4>
+          <div class="space-y-2">
+            <p class="text-gray-500 text-sm">hello@stephoria.com</p>
+            <div class="flex items-center gap-3 mt-4">
+              <a href="#" class="w-10 h-10 rounded-full bg-royal-900/50 border border-royal-800/30 flex items-center justify-center text-royal-400 hover:bg-royal-800/50 hover:text-royal-300 transition-all">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-royal-900/50 border border-royal-800/30 flex items-center justify-center text-royal-400 hover:bg-royal-800/50 hover:text-royal-300 transition-all">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-royal-900/50 border border-royal-800/30 flex items-center justify-center text-royal-400 hover:bg-royal-800/50 hover:text-royal-300 transition-all">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-8 border-t border-royal-800/20 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-gray-600 text-sm">&copy; 2026 Stephoria. All rights reserved.</p>
+        <p class="text-gray-700 text-xs">Creating Timeless Memories</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        mobileMenu.classList.add('open');
+        bar1.style.transform = 'rotate(45deg) translate(4px, 4px)';
+        bar2.style.opacity = '0';
+        bar3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
+      } else {
+        closeMenu();
+      }
+    });
+
+    function closeMenu() {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      bar1.style.transform = '';
+      bar2.style.opacity = '';
+      bar3.style.transform = '';
+    }
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('nav-scrolled');
+        navbar.classList.remove('py-4');
+        navbar.classList.add('py-3');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+        navbar.classList.remove('py-3');
+        navbar.classList.add('py-4');
+      }
+    });
+
+    // Scroll reveal animations
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
